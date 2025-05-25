@@ -23,7 +23,7 @@
                    class="bg-white rounded-xl shadow-lg mt-6 hover:shadow-xl transition block overflow-hidden w-[220px]">
 
                     <div class="w-[220px] h-[220px]">
-                        <img src="{{ asset('storage/' . $book->image) }}"
+                        <img src="{{ asset('books/' . $book->image) }}"
                              alt="Portada de {{ $book->title }}"
                              class="w-[220px] h-[220px] object-cover">
                     </div>

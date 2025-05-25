@@ -22,7 +22,7 @@
                         <a href="{{ route('illustrations.show', $illustration->id) }}" class="block group">
                             <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-200 h-full w-[220px] flex flex-col">
                                 <div class="aspect-[4/3] overflow-hidden">
-                                    <img src="{{ asset('storage/' . $illustration->image_path) }}"
+                                    <img src="{{ asset('illustrations/' . $illustration->image_path) }}"
                                          alt="{{ $illustration->title }}"
                                          class="w-[220px] h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 </div>
