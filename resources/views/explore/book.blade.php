@@ -8,7 +8,7 @@
                     {{-- Portada --}}
                     @if($book->image)
                         <div class="flex justify-center">
-                            <img src="{{ asset('storage/' . $book->image) }}"
+                            <img src="{{ asset('books/' . $book->image) }}"
                                  alt="{{ $book->title }}"
                                  class="w-90 h-96 object-cover rounded">
                         </div>

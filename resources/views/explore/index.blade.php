@@ -22,7 +22,7 @@
                             <a href="{{ route('book.show', $book->id) }}">
                                 <div class="bg-white border rounded-xl shadow hover:shadow-md transition p-4 flex flex-col items-center justify-between text-center min-h-[300px]">
                                     @if($book->image)
-                                        <img src="{{ asset('storage/' . $book->image) }}"
+                                        <img src="{{ asset('books/' . $book->image) }}"
                                              alt="{{ $book->title }} cover"
                                              class="w-32 h-42 object-cover rounded mb-4">
                                     @endif
