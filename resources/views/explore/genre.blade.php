@@ -25,7 +25,7 @@
                         {{-- Miniaturas de ilustraciones --}}
                         @if($book->illustrations && $book->illustrations->count())
                             <div class="flex justify-center gap-2 mt-3">
-                                @foreach ($book->illustrations->take(3) as $illustration)
+                                @foreach ($book->illustration->take(3) as $illustration)
                                     <div class="w-14 h-14 overflow-hidden rounded border border-gray-300">
 
                                         <img src="{{$illustration->image_path}}"
