@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "👉 Creando symlink..."
-ln -sf /var/www/storage/app/public /var/www/public/storage
+echo "📂 Copiando archivos de storage a public..."
+cp -r /var/www/storage/app/public/* /var/www/public/storage/
 
 echo "📦 Ejecutando migraciones..."
 php artisan migrate --force
