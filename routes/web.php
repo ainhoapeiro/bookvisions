@@ -70,6 +70,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/book', [BookController::class, 'store'])->name('books.store');
 });
 
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/check-book-image', function () {
+    return Storage::url('books/a_house_with_good_bones.jpg');
+});
+
+
 
 // Rutas de autenticación (login, register, etc.)
 require __DIR__.'/auth.php';
