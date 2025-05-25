@@ -30,7 +30,7 @@ class BookController extends Controller
 
         $book = Book::create($validated);
 
-        return redirect()->route('illustrations.create', ['selected_book' => $book->id])
+        return redirect()->route('illustration.create', ['selected_book' => $book->id])
             ->with('success', 'Libro añadido con éxito.');
     }
 

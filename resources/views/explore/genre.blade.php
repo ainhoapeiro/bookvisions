@@ -27,7 +27,7 @@
                             <div class="flex justify-center gap-2 mt-3">
                                 @foreach ($book->illustrations->take(3) as $illustration)
                                     <div class="w-14 h-14 overflow-hidden rounded border border-gray-300">
-                                        <img src="{{ asset('illustrations/' . $illustration->image_path) }}"
+                                        <img src="{{ asset('illustration/' . $illustration->image_path) }}"
                                              alt="Illustration"
                                              class="w-32 h-32 object-cover">
                                     </div>

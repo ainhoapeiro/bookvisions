@@ -40,9 +40,9 @@
             @else
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     @foreach ($book->illustrations as $illustration)
-                        <a href="{{ route('illustrations.show', $illustration->id) }}"
+                        <a href="{{ route('illustration.show', $illustration->id) }}"
                            class="block w-full overflow-hidden">
-                            <img src="{{ asset('illustrations/' . $illustration->image_path) }}"
+                            <img src="{{ asset('illustration/' . $illustration->image_path) }}"
                                  alt="{{ $illustration->title }}"
                                  class="w-full object-cover rounded">
                         </a>

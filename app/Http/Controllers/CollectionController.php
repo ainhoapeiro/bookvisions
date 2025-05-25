@@ -8,7 +8,7 @@ class CollectionController extends Controller
 {
     public function show($id)
     {
-        $collection = \App\Models\Collection::with('illustrations.book', 'user')->findOrFail($id);
+        $collection = \App\Models\Collection::with('illustration.book', 'user')->findOrFail($id);
         return view('collections.show', compact('collection'));
     }
 

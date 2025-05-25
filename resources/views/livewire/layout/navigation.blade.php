@@ -61,7 +61,7 @@ $logout = function (Logout $logout) {
                             <a href="{{ route('profile.view', auth()->id()) }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 Mi perfil</a>
 
-                            <a href="{{ route('illustrations.create') }}"
+                            <a href="{{ route('illustration.create') }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ Subir ilustración</a>
 
                             <a href="{{ route('profile') }}"
@@ -131,7 +131,7 @@ $logout = function (Logout $logout) {
                     <a href="{{ route('profile.view', auth()->id()) }}"
                        class="block text-sm text-gray-700 hover:underline">👤 Mi perfil</a>
 
-                    <a href="{{ route('illustrations.create') }}"
+                    <a href="{{ route('illustration.create') }}"
                        class="block text-sm text-gray-700 hover:underline">🖼️ Subir ilustración</a>
 
                     <a href="{{ route('profile') }}"

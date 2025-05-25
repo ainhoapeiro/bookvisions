@@ -19,13 +19,13 @@ class ExploreController extends Controller
 
     public function showGenre($id)
     {
-        $gender = Gender::with('books.illustrations')->findOrFail($id);
+        $gender = Gender::with('books.illustration')->findOrFail($id);
         return view('explore.genre', compact('gender'));
     }
 
     public function showBook($id)
     {
-        $book = Book::with(['gender', 'illustrations'])->findOrFail($id);
+        $book = Book::with(['gender', 'illustration'])->findOrFail($id);
         return view('explore.book', compact('book'));
     }
 

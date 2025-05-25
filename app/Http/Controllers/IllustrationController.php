@@ -14,7 +14,7 @@ class IllustrationController extends Controller
     public function create()
     {
         $books = Book::all();
-        return view('illustrations.create', compact('books'));
+        return view('illustration.create', compact('books'));
     }
 
     public function store(Request $request)
@@ -26,7 +26,7 @@ class IllustrationController extends Controller
             'book_id' => 'required|exists:books,id',
         ]);
 
-        $path = $request->file('image_path')->store('illustrations', 'public');
+        $path = $request->file('image_path')->store('illustration', 'public');
 
         Illustration::create([
             'title' => $validated['title'],
@@ -44,7 +44,7 @@ class IllustrationController extends Controller
         $illustration = Illustration::with(['book', 'user', 'comments.user'])->findOrFail($id);
         $collections = auth()->check() ? auth()->user()->collections : collect();
 
-        return view('illustrations.show', compact('illustration', 'collections'));
+        return view('illustration.show', compact('illustration', 'collections'));
     }
 
     public function like($id)

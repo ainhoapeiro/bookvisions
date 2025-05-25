@@ -5,7 +5,7 @@
         <div class="bg-white p-6 rounded-xl shadow relative">
 
             {{-- Imagen --}}
-            <img src="{{ asset('illustrations/' . $illustration->image_path) }}"
+            <img src="{{ asset('illustration/' . $illustration->image_path) }}"
                  alt="{{ $illustration->title }}"
                  class="w-[220px] h-auto object-contain rounded mb-6 mx-auto">
 
@@ -36,7 +36,7 @@
                 @auth
                     <div class="flex items-center gap-4">
                         {{-- Like --}}
-                        <form action="{{ route('illustrations.like', $illustration->id) }}" method="POST">
+                        <form action="{{ route('illustration.like', $illustration->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="p-2 bg-purple-500 rounded hover:bg-purple-600" title="Like">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@
             {{-- Comentarios --}}
             @auth
                 <div id="comment-form" class="mb-6 hidden">
-                    <form action="{{ route('illustrations.comment', $illustration->id) }}" method="POST" class="flex items-center gap-2">
+                    <form action="{{ route('illustration.comment', $illustration->id) }}" method="POST" class="flex items-center gap-2">
                         @csrf
                         <input type="text" name="comment" placeholder="Escribe tu comentario aquí..." class="flex-grow p-2 border rounded" required>
                         <button type="submit" class="p-2 bg-purple-600 text-white rounded hover:bg-purple-700">
