@@ -20,5 +20,5 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
-CMD php artisan storage:link && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
+CMD ln -sfn /var/www/storage/app/public /var/www/public/storage && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
 
