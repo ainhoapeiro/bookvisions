@@ -42,7 +42,8 @@
                     @foreach ($book->illustrations as $illustration)
                         <a href="{{ route('illustration.show', $illustration->id) }}"
                            class="block w-full overflow-hidden">
-                            <img src="{{ asset('illustration/' . $illustration->image_path) }}"
+
+                            <img src="{{ asset($illustration->image_path) }}"
                                  alt="{{ $illustration->title }}"
                                  class="w-full object-cover rounded">
                         </a>

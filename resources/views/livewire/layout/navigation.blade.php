@@ -48,7 +48,7 @@ $logout = function (Logout $logout) {
                         <button @click="openAvatarMenu = !openAvatarMenu"
                                 class="flex items-center focus:outline-none"
                                 id="avatar-button">
-                            <img src="{{ asset('profile-image/' . auth()->user()->profile_image) }}"
+                            <img src="{{ auth()->user()->profile_image }}"
                                  alt="Avatar"
                                  class="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500">
                         </button>

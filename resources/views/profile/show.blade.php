@@ -7,7 +7,7 @@
         <div class="bg-white p-6 rounded-xl shadow text-center">
             {{-- Imagen de perfil --}}
             @if ($user->profile_image)
-                <img src="{{ asset('profile-image/' . $user->profile_image) }}"
+                <img src="{{  $user->profile_image }}"
                      alt="{{ $user->name }}"
                      class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-purple-300 shadow">
             @else
@@ -54,7 +54,8 @@
                         <a href="{{ route('illustration.show', $illustration->id) }}" class="block group">
                             <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-200 h-full w-[220px] flex flex-col">
                                 <div class="aspect-[4/3] overflow-hidden">
-                                    <img src="{{ asset('illustration/' . $illustration->image_path) }}"
+                                    <img src="{{ asset($illustration->image_path) }}"
+
                                          alt="{{ $illustration->title }}"
                                          class="w-[220px] object-cover group-hover:scale-105 transition-transform duration-300">
                                 </div>

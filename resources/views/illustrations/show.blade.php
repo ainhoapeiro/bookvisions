@@ -5,7 +5,7 @@
         <div class="bg-white p-6 rounded-xl shadow relative">
 
             {{-- Imagen --}}
-            <img src="{{ asset('illustration/' . $illustration->image_path) }}"
+            <img src="{{ asset($illustration->image_path) }}"
                  alt="{{ $illustration->title }}"
                  class="w-[220px] h-auto object-contain rounded mb-6 mx-auto">
 
