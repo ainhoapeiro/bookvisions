@@ -29,7 +29,7 @@
                                     <div class="w-52 h-52 overflow-hidden rounded border border-gray-300">
                                         <img src="{{ asset($illustration->image_path) }}"
                                              alt="Illustration"
-                                             class="w-40 h-40 object-cover">
+                                             class="w-52 h-52 object-cover">
                                     </div>
                                 @endforeach
                             </div>
