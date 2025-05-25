@@ -28,6 +28,7 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 # Crear symlink de storage y lanzar Laravel
-CMD ln -sfn /var/www/storage/app/public /var/www/public/storage \
-    && php artisan migrate --force \
-    && php artisan serve --host=0.0.0.0 --port=8000
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
