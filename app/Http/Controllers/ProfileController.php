@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function show($id)
     {
-        $user = \App\Models\User::with(['illustration.book', 'collections.illustration'])->findOrFail($id);
+        $user = \App\Models\User::with(['illustrations.book', 'collections.illustration'])->findOrFail($id);
 
         return view('profile.show', compact('user'));
     }
