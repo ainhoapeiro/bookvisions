@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('illustration_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
-            $table->unique(['collection_id', 'illustration_id'], 'user_id '); // para evitar duplicados
+            $table->unique(['collection_id', 'illustration_id']); // para evitar duplicados
         });
 
     }
