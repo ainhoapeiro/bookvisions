@@ -70,10 +70,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/book', [BookController::class, 'store'])->name('books.store');
 });
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
-Route::get('/check-book-image', function () {
-    return Storage::url('books/a_house_with_good_bones.jpg');
+Route::get('/check-symlink', function () {
+    $target = public_path('storage/books/a_house_with_good_bones.jpg');
+    return File::exists($target) ? '✔️ ENLACE FUNCIONA' : '❌ ARCHIVO NO ENCONTRADO EN PUBLIC';
 });
 
 
