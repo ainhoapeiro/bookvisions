@@ -26,7 +26,7 @@
                         @if($book->illustrations && $book->illustrations->count())
                             <div class="flex justify-center gap-2 mt-3">
                                 @foreach ($book->illustrations->take(3) as $illustration)
-                                    <div class="w-20 h-20 overflow-hidden rounded border border-gray-300">
+                                    <div class="w-52 h-52 overflow-hidden rounded border border-gray-300">
                                         <img src="{{ asset($illustration->image_path) }}"
                                              alt="Illustration"
                                              class="w-40 h-40 object-cover">
