@@ -44,7 +44,7 @@ class IllustrationController extends Controller
         $illustration = Illustration::with(['book', 'user', 'comments.user'])->findOrFail($id);
         $collections = auth()->check() ? auth()->user()->collections : collect();
 
-        return view('illustration.show', compact('illustration', 'collections'));
+        return view('illustrations.show', compact('illustration', 'collections'));
     }
 
     public function like($id)
