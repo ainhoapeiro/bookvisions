@@ -7,7 +7,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
             @foreach ($gender->books as $book)
                 <a href="{{ route('book.show', $book->id) }}">
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-md transition w-[215px] text-center">
+                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-md transition w-[400px] text-center">
 
                         {{-- Imagen principal del libro --}}
                         @if($book->image)
@@ -29,7 +29,7 @@
                                     <div class="w-20 h-20 overflow-hidden rounded border border-gray-300">
                                         <img src="{{ asset($illustration->image_path) }}"
                                              alt="Illustration"
-                                             class="w-32 h-32 object-cover">
+                                             class="w-40 h-40 object-cover">
                                     </div>
                                 @endforeach
                             </div>
