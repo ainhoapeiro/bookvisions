@@ -48,7 +48,7 @@ $logout = function (Logout $logout) {
                         <button @click="openAvatarMenu = !openAvatarMenu"
                                 class="flex items-center focus:outline-none"
                                 id="avatar-button">
-                            <img src="{{ auth()->user()->profile_image }}"
+                            <img src="{{ asset(auth()->user()->profile_image) }}"
                                  alt="Avatar"
                                  class="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500">
                         </button>
@@ -61,7 +61,7 @@ $logout = function (Logout $logout) {
                             <a href="{{ route('profile.view', auth()->id()) }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">👤 Mi perfil</a>
 
-                            <a href="{{ route('illustration.create') }}"
+                            <a href="{{ route('illustrations.create') }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ Subir ilustración</a>
 
                             <a href="{{ route('profile') }}"

@@ -7,7 +7,7 @@
         <div class="bg-white p-6 rounded-xl shadow text-center">
             {{-- Imagen de perfil --}}
             @if ($user->profile_image)
-                <img src="{{  $user->profile_image }}"
+                <img src="{{ asset($user->profile_image) }}"
                      alt="{{ $user->name }}"
                      class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-purple-300 shadow">
             @else
