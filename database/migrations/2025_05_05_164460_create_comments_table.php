@@ -19,10 +19,15 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('comments', function (Blueprint $table) {
-            $table->foreign('illustration_id')->references('id')->on('illustrations')->onDelete('cascade');
-        });
+        // Delay para asegurar que la tabla illustrations está creada
+        sleep(1);
 
+        Schema::table('comments', function (Blueprint $table) {
+            $table->foreign('illustration_id')
+                ->references('id')
+                ->on('illustrations')
+                ->onDelete('cascade');
+        });
     }
 
     /**
