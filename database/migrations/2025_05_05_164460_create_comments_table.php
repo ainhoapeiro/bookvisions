@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreign('illustration_id')->references('id')->on('illustrations')->onDelete('cascade');
+            $table->foreignId('illustration_id')->constrained()->constrained('illustrations')->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
         });
+
     }
 
     /**
