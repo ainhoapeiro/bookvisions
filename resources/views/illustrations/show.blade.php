@@ -73,7 +73,7 @@
             {{-- Comentarios --}}
             @auth
                 <div id="comment-form" class="mb-6 hidden">
-                    <form action="{{ route('illustration.comment', $illustration->id) }}" method="POST" class="flex items-center gap-2">
+                    <form action="{{ route('illustrations.comment', $illustration->id) }}" method="POST" class="flex items-center gap-2">
                         @csrf
                         <input type="text" name="comment" placeholder="Escribe tu comentario aquí..." class="flex-grow p-2 border rounded" required>
                         <button type="submit" class="p-2 bg-purple-600 text-white rounded hover:bg-purple-700">
