@@ -25,8 +25,11 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('books', 'public');
+            $filename = $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('books'), $filename);
+            $validated['image'] = 'books/' . $filename;
         }
+
 
         $book = Book::create($validated);
 

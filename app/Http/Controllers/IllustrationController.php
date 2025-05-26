@@ -26,7 +26,9 @@ class IllustrationController extends Controller
             'book_id' => 'required|exists:books,id',
         ]);
 
-        $path = $request->file('image_path')->store('illustration', 'public');
+        $filename = $request->file('image_path')->getClientOriginalName();
+        $request->file('image_path')->move(public_path('illustration'), $filename);
+        $path = 'illustration/' . $filename;
 
         Illustration::create([
             'title' => $validated['title'],
