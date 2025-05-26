@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::table('likes', function (Blueprint $table) {
             $table->foreign('illustration_id')
                 ->references('id')
-                ->on('illustrations')
+                ->on('illustration')
                 ->onDelete('cascade');
         });
     }
