@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('author');
             $table->string('image')->nullable();
             $table->text('synopsis')->nullable();
-            $table->foreignId('genre_id')->constrained()->constrained('genders')->onDelete('cascade');
+            $table->foreignId('genre_id')->constrained('genders')->onDelete('cascade');
             $table->timestamps();
         });
     }
