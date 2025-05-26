@@ -14,7 +14,7 @@ class IllustrationController extends Controller
     public function create()
     {
         $books = Book::all();
-        return view('illustration.create', compact('books'));
+        return view('illustrations.create', compact('books'));
     }
 
     public function store(Request $request)
