@@ -7,23 +7,17 @@ use Illuminate\Database\Migrations\Migrator;
 
 class DelayedMigrationProvider extends ServiceProvider
 {
-    public function register(): void
+    public function boot(): void
     {
-        $this->app->extend(Migrator::class, function ($migrator, $app) {
-            return new class($migrator) extends Migrator {
-                public function run($paths = [], array $options = [])
-                {
-                    parent::run($paths, $options);
+        $this->app->afterResolving(Migrator::class, function (Migrator $migrator) {
+            $originalRun = \Closure::fromCallable([$migrator, 'run']);
 
-                    // PAUSA para que MySQL registre bien las tablas
-                    sleep(2); // Puedes aumentar a 2 si sigue fallando
-                }
-            };
+            $migrator->macro('run', function (...$args) use ($originalRun) {
+                $result = $originalRun(...$args);
+                sleep(2); // retrasa 1 segundo después de cada ejecución de migración
+                return $result;
+            });
         });
     }
 
-    public function boot(): void
-    {
-        //
-    }
 }
