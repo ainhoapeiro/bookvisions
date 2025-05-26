@@ -123,19 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'providers' => [
-
-        /*
-        |--------------------------------------------------------------------------
-        | Application Service Providers
-        |--------------------------------------------------------------------------
-        */
-
-        // Otros providers de Laravel aquí (si los tienes)
-
-        App\Providers\DelayedMigrationProvider::class, // 👈 AÑADE ESTA LÍNEA
-
-    ],
-
 
 ];
