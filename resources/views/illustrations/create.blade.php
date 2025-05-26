@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('illustration.store') }}" enctype="multipart/form-data" class="space-y-6">
+        <form method="POST" action="{{ route('illustrations.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div>
