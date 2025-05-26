@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('collection_illustration', function (Blueprint $table) {
             $table->id();
             $table->foreignId('collections_id')->constrained()->onDelete('cascade');
-            $table->foreign('illustration_id')->references('id')->on('illustrations')->onDelete('cascade');
+            $table->foreign('illustration_id')->constrained()->constrained('illustrations')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique(['collection_id', 'illustration_id']); // para evitar duplicados
