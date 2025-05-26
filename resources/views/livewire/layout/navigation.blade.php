@@ -118,7 +118,7 @@ $logout = function (Logout $logout) {
         @auth
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4 flex items-center gap-4">
-                    <img src="{{ asset('storage/' . auth()->user()->profile_image) }}"
+                    <img src="{{ asset( auth()->user()->profile_image) }}"
                          alt="Avatar"
                          class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500">
                     <div>
@@ -131,7 +131,7 @@ $logout = function (Logout $logout) {
                     <a href="{{ route('profile.view', auth()->id()) }}"
                        class="block text-sm text-gray-700 hover:underline">👤 Mi perfil</a>
 
-                    <a href="{{ route('illustration.create') }}"
+                    <a href="{{ route('illustrations.create') }}"
                        class="block text-sm text-gray-700 hover:underline">🖼️ Subir ilustración</a>
 
                     <a href="{{ route('profile') }}"
