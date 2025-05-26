@@ -31,7 +31,7 @@ Route::get('/genres/{id}', [ExploreController::class, 'showGenre'])->name('genre
 
 Route::get('/books/{id}', [ExploreController::class, 'showBook'])->name('book.show');
 
-Route::get('/illustration/{id}', [IllustrationController::class, 'show'])->name('illustration.show');
+Route::get('/illustration/{id}', [IllustrationController::class, 'show'])->name('illustrations.show');
 
 Route::get('/users/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
@@ -51,8 +51,8 @@ Route::post('/logout', function () {
 
 Route::put('/profile/update', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');
 
-Route::post('/illustration/{id}/like', [IllustrationController::class, 'like'])->name('illustration.like');
-Route::post('/illustration/{id}/comment', [IllustrationController::class, 'comment'])->name('illustration.comment');
+Route::post('/illustration/{id}/like', [IllustrationController::class, 'like'])->name('illustrations.like');
+Route::post('/illustration/{id}/comment', [IllustrationController::class, 'comment'])->name('illustrations.comment');
 
 Route::post('/illustration/{id}/save', [IllustrationController::class, 'saveToCollection'])->name('collections.save');
 
@@ -61,8 +61,8 @@ Route::get('/explore/search', [BookController::class, 'search'])->name('books.se
 Route::get('/collections/{id}', [CollectionController::class, 'show'])->name('collections.show');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/upload/illustration', [IllustrationController::class, 'create'])->name('illustration.create');
-    Route::post('/upload/illustration', [IllustrationController::class, 'store'])->name('illustration.store');
+    Route::get('/upload/illustration', [IllustrationController::class, 'create'])->name('illustrations.create');
+    Route::post('/upload/illustration', [IllustrationController::class, 'store'])->name('illustrations.store');
 });
 
 Route::middleware(['auth'])->group(function () {
