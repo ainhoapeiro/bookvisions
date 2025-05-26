@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Livewire\WithFileUploads;
 
-with(WithFileUploads::class);
+Livewire\Volt\Volt::trait(WithFileUploads::class);
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
