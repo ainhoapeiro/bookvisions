@@ -6,6 +6,10 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/line-clamp": "^0.4.4",
+        "@tailwindcss/typography": "^0.5.16",
         "alpinejs": "^3.13.0",
         "autoprefixer": "^10.4.14",
         "flowbite": "^1.6.6",
