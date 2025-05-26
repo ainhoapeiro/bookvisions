@@ -98,8 +98,9 @@ $register = function () {
             <label for="image" class="block text-sm font-medium text-gray-700">
                 {{ __('Profile Image') }}
             </label>
-            <input id="image" type="file" name="image" accept="image/*"
+            <input id="image" type="file" name="image" accept="image/*" wire:model="image"
                    class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+
 
             @error('image')
             <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
