@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
+use Livewire\WithFileUploads;
+
+with(WithFileUploads::class);
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -37,13 +40,16 @@ rules([
 $register = function () {
     $validated = $this->validate();
 
-    // Subir imagen si existe
+    // Guardar imagen si se sube, o usar la predeterminada
     if (!empty($validated['image'])) {
-        $validated['profile_image'] = $validated['image']->store('profile-photos', 'public');
+        $filename = $validated['image']->getClientOriginalName();
+        $validated['image']->move(public_path('profile-image'), $filename);
+        $validated['profile_image'] = 'profile-image/' . $filename;
     } else {
-        $validated['profile_image'] = null;
+        $validated['profile_image'] = 'profile-image/default-user.png';
     }
-    unset($validated['image']); // Para que no intente guardar el campo 'image' inexistente
+
+    unset($validated['image']);
 
     $validated['password'] = Hash::make($validated['password']);
 
