@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('bio');
             $table->string('profile_image');
+            $table->boolean('is_admin')->default(false);
             $table->timestamps();
         });
 

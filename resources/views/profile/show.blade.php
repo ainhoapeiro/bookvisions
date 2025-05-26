@@ -22,10 +22,11 @@
             </p>
 
             {{-- Número de seguidores y botón seguir --}}
-            <div class="mt-4 flex items-center justify-center gap-4">
-                <span class="text-gray-700 text-sm">
-                    {{ $user->followers->count() }} seguidores
-                </span>
+            {{-- Número de seguidores y botón seguir --}}
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-4">
+    <span class="text-gray-700 text-sm">
+        {{ $user->followers->count() }} seguidores
+    </span>
                 @auth
                     @if (auth()->id() !== $user->id)
                         <form action="{{ route('user.follow', $user->id) }}" method="POST">
@@ -36,6 +37,15 @@
                                 {{ auth()->user()->following->contains($user->id) ? 'Dejar de seguir' : 'Seguir' }}
                             </button>
                         </form>
+                    @endif
+
+                    {{-- Botón de Panel de Administración (solo admins) --}}
+                    @if(auth()->user()->user_permission_level === 'admin')
+                        <a href="{{ route('admin.panel') }}"
+                           class="px-4 py-2 text-sm rounded-lg text-white transition"
+                           style="background-color: #442b68;">
+                            Panel de Administración
+                        </a>
                     @endif
                 @endauth
             </div>

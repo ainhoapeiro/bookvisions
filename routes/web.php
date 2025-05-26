@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\AdminController;
 
 Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -70,12 +71,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/book', [BookController::class, 'store'])->name('books.store');
 });
 
-use Illuminate\Support\Facades\File;
+Route::get('/admin/panel', [AdminController::class, 'index'])->name('admin.panel');
 
-Route::get('/check-symlink', function () {
-    $target = public_path('storage/books/a_house_with_good_bones.jpg');
-    return File::exists($target) ? '✔️ ENLACE FUNCIONA' : '❌ ARCHIVO NO ENCONTRADO EN PUBLIC';
-});
+Route::delete('/admin/user/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+Route::delete('/admin/illustration/{id}', [AdminController::class, 'deleteIllustration'])->name('admin.deleteIllustration');
+Route::delete('/admin/book/{id}', [AdminController::class, 'deleteBook'])->name('admin.deleteBook');
+
 
 
 
