@@ -51,7 +51,7 @@
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
                     @foreach ($user->illustrations as $illustration)
-                        <a href="{{ route('illustration.show', $illustration->id) }}" class="block group">
+                        <a href="{{ route('illustrations.show', $illustration->id) }}" class="block group">
                             <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-200 h-full w-[220px] flex flex-col">
                                 <div class="aspect-[4/3] overflow-hidden">
                                     <img src="{{ asset($illustration->image_path) }}"
