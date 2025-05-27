@@ -2,6 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     @include('partials.head')
+    {{-- Asegúrate de tener esto si usas Livewire --}}
+    @livewireStyles
 </head>
 <body class="min-h-screen bg-white">
 <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50">
@@ -131,6 +133,7 @@
 
 {{ $slot }}
 
-@fluxScripts
+{{-- Scripts Livewire --}}
+@livewireScripts
 </body>
 </html>

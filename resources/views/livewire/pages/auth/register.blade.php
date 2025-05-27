@@ -1,8 +1,5 @@
 {{-- resources/views/auth/register.blade.php --}}
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Crea una cuenta nueva.') }}
-    </div>
 
     {{-- Errores de validación clásicos --}}
     @if ($errors->any())
