@@ -11,13 +11,9 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::where('is_admin', false)->paginate(10, ['*'], 'page_users');
-        $illustrations = Illustration::latest()->paginate(10, ['*'], 'page_illustrations');
-        $books = Book::latest()->paginate(10, ['*'], 'page_books');
-
-        if ($request->ajax() && $request->has('section')) {
-            return view('admin.panel', compact('users', 'illustrations', 'books'));
-        }
+        $users = User::where('is_admin', false)->get();
+        $illustrations = Illustration::latest()->get();
+        $books = Book::latest()->get();
 
         return view('admin.panel', compact('users', 'illustrations', 'books'));
     }
