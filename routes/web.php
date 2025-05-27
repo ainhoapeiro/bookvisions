@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExploreController;
@@ -50,6 +51,13 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
+Route::get('register', [RegisteredUserController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest');
+
 Route::put('/profile/update', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');
 
 Route::post('/illustration/{id}/like', [IllustrationController::class, 'like'])->name('illustrations.like');
@@ -79,8 +87,3 @@ Route::delete('/admin/book/{id}', [AdminController::class, 'deleteBook'])->name(
 
 // Rutas de autenticación (login, register, etc.)
 require __DIR__.'/auth.php';
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
