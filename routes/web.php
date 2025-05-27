@@ -77,9 +77,11 @@ Route::delete('/admin/user/{id}', [AdminController::class, 'deleteUser'])->name(
 Route::delete('/admin/illustration/{id}', [AdminController::class, 'deleteIllustration'])->name('admin.deleteIllustration');
 Route::delete('/admin/book/{id}', [AdminController::class, 'deleteBook'])->name('admin.deleteBook');
 
-// Rutas de autenticación (login, register, etc.)
-require __DIR__.'/auth.php';
-
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+
+// Rutas de autenticación (login, register, etc.)
+require __DIR__.'/auth.php';
+
+
