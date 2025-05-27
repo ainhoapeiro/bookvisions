@@ -13,8 +13,8 @@
         {{-- Usuarios --}}
         <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Usuarios ({{ $users->total() }})</summary>
-            <div id="usuarios-section">
-                <ul class="mt-4 space-y-2">
+            <div id="usuarios-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
+                <ul class="space-y-2">
                     @foreach ($users as $user)
                         <li class="flex justify-between items-center">
                             {{ $user->username }}
@@ -26,17 +26,14 @@
                         </li>
                     @endforeach
                 </ul>
-                <div class="pagination">
-                    {{ $users->withPath(url()->current() . '?section=usuarios')->links() }}
-                </div>
             </div>
         </details>
 
         {{-- Ilustraciones --}}
         <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Ilustraciones ({{ $illustrations->total() }})</summary>
-            <div id="ilustraciones-section">
-                <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div id="ilustraciones-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
+                <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($illustrations as $illustration)
                         <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
                             <img src="{{ asset($illustration->image_path) }}" alt="{{ $illustration->title }}" class="w-full h-40 object-cover mb-2 rounded">
@@ -49,17 +46,14 @@
                         </li>
                     @endforeach
                 </ul>
-                <div class="pagination">
-                    {{ $illustrations->withPath(url()->current() . '?section=ilustraciones')->links() }}
-                </div>
             </div>
         </details>
 
         {{-- Libros --}}
         <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Libros ({{ $books->total() }})</summary>
-            <div id="libros-section">
-                <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div id="libros-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
+                <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($books as $book)
                         <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
                             <img src="{{ asset('books/' . $book->image) }}" alt="{{ $book->title }}" class="w-full h-40 object-cover mb-2 rounded">
@@ -72,9 +66,6 @@
                         </li>
                     @endforeach
                 </ul>
-                <div class="pagination">
-                    {{ $books->withPath(url()->current() . '?section=libros')->links() }}
-                </div>
             </div>
         </details>
     </div>
@@ -91,7 +82,7 @@
         </div>
     </div>
 
-    {{-- Script para el modal y paginación parcial --}}
+    {{-- Script para el modal --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             let targetForm = null;
@@ -114,57 +105,6 @@
                     targetForm.submit();
                 }
             });
-
-            document.body.addEventListener('click', function (e) {
-                if (e.target.closest('.pagination a')) {
-                    e.preventDefault();
-                    const link = e.target.closest('a');
-                    const url = link.href;
-                    const section = new URL(url).searchParams.get('section');
-
-                    fetch(url)
-                        .then(res => res.text())
-                        .then(html => {
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            const newContent = doc.querySelector(`#${section}-section`);
-                            document.querySelector(`#${section}-section`).innerHTML = newContent.innerHTML;
-                        });
-                }
-            });
         });
     </script>
-
-    {{-- Estilos de paginación --}}
-    <style>
-        .pagination {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-            gap: 0.5rem;
-        }
-
-        .pagination a,
-        .pagination span {
-            display: inline-block;
-            padding: 0.5rem 0.75rem;
-            background-color: #8f6baa;
-            color: white;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.2s ease-in-out;
-        }
-
-        .pagination span[aria-current="page"] {
-            background-color: #edc865;
-            font-weight: 600;
-        }
-
-        .pagination a:hover {
-            background-color: #442b68;
-        }
-    </style>
 @endsection

@@ -62,12 +62,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ml-4" style="background-color: rgba(143, 107, 170, 1); border-color: rgba(143, 107, 170, 1);">
+        <div class="flex items-center justify-end mt-6">
+            <x-primary-button style="background-color: rgba(143, 107, 170, 1); border-color: rgba(143, 107, 170, 1);">
                 {{ __('Register') }}
             </x-primary-button>
         </div>
