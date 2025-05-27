@@ -138,11 +138,9 @@
     {{-- Estilos de paginación --}}
     <style>
         .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-            gap: 0.25rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .pagination a,
@@ -174,5 +172,6 @@
         .pagination a:hover {
             background-color: #442b68;
         }
+    </style>
     </style>
 @endsection
