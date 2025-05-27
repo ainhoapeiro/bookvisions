@@ -160,7 +160,6 @@
 
         .pagination span[aria-current="page"] {
             background-color: #edc865;
-            color: #263a5e;
             font-weight: 600;
         }
 
