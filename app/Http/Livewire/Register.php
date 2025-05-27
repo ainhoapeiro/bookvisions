@@ -22,7 +22,7 @@ class Register extends Component
         'email' => 'required|string|email|max:255|unique:users',
         'bio' => 'required|string|max:1000',
         'password' => 'required|string|confirmed|min:8',
-        'image' => 'required|image|max:1024',
+        'image' => 'nullable|image|max:1024',
     ];
 
     public function register()
@@ -33,9 +33,7 @@ class Register extends Component
             $filename = $this->image->getClientOriginalName();
             $this->image->move(public_path('profile-image'), $filename);
             $profileImagePath = 'profile-image/' . $filename;
-
         } else {
-            // Imagen por defecto si no se sube ninguna
             $profileImagePath = 'profile-image/default-user.png';
         }
 
@@ -55,4 +53,8 @@ class Register extends Component
         return redirect()->route('dashboard');
     }
 
+    public function render()
+    {
+        return view('livewire.register');
+    }
 }

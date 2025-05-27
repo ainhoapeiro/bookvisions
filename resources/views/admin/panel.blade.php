@@ -138,40 +138,34 @@
     {{-- Estilos de paginación --}}
     <style>
         .pagination {
-            flex-direction: column;
-            align-items: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
             gap: 0.5rem;
         }
 
         .pagination a,
         .pagination span {
+            display: inline-block;
             padding: 0.5rem 0.75rem;
-            border: 1px solid #8f6baa;
-            border-radius: 0.375rem;
             background-color: #8f6baa;
             color: white;
+            border-radius: 0.375rem;
             font-size: 0.875rem;
-            text-decoration: none;
-            min-width: 2rem;
             text-align: center;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
         }
 
-        .pagination .active span,
         .pagination span[aria-current="page"] {
             background-color: #edc865;
             color: #263a5e;
-            font-weight: bold;
-        }
-
-        .pagination span[aria-disabled='true'] {
-            background-color: #f9f6f6;
-            color: #aaa;
-            cursor: not-allowed;
+            font-weight: 600;
         }
 
         .pagination a:hover {
             background-color: #442b68;
         }
-    </style>
     </style>
 @endsection
