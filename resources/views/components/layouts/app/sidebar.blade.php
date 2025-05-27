@@ -37,27 +37,25 @@
                     icon-trailing="chevrons-up-down"
                 />
 
-                <flux:menu class="w-[220px]">
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span
-                                        class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black"
-                                    >
-                                        {{ auth()->user()->initials() }}
-                                    </span>
-                                </span>
+                @if(auth()->check())
+                    <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                        <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                            <span
+                                class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black"
+                            >
+                                {{ auth()->user()->initials() }}
+                            </span>
+                        </span>
 
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                </div>
-                            </div>
+                        <div class="grid flex-1 text-start text-sm leading-tight">
+                            <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                            <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                         </div>
-                    </flux:menu.radio.group>
+                    </div>
+                @endif
 
-                    <flux:menu.separator />
+
+                <flux:menu.separator />
 
                     <flux:menu.radio.group>
                         <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
