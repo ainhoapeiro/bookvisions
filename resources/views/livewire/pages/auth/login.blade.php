@@ -58,12 +58,17 @@ $login = function () {
     </form>
 
     <div class="mt-4 text-center">
-        <p class="text-sm text-gray-600">
+        <p class="text-sm text-gray-600 mb-2">
             {{ __("Don't have an account?") }}
-            <a href="{{ url('/register') }}" class="hover:underline" style="color: rgba(143, 107, 170, 1);">
-                {{ __('Register') }}
-            </a>
+            <span class="font-semibold" style="color: rgba(143, 107, 170, 1);">
+            {{ __('Register here:') }}
+        </span>
         </p>
+
+        <div class="mt-6">
+            <livewire:register />
+        </div>
     </div>
+
 </div>
 

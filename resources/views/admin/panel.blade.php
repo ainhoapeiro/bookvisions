@@ -142,6 +142,7 @@
             justify-content: center;
             margin-top: 1.5rem;
             gap: 0.25rem;
+            flex-wrap: wrap;
         }
 
         .pagination a,
@@ -153,9 +154,12 @@
             color: white;
             font-size: 0.875rem;
             text-decoration: none;
+            min-width: 2rem;
+            text-align: center;
         }
 
-        .pagination .active span {
+        .pagination .active span,
+        .pagination span[aria-current="page"] {
             background-color: #edc865;
             color: #263a5e;
             font-weight: bold;
