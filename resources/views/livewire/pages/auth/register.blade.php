@@ -1,8 +1,6 @@
 <x-guest-layout>
     <section class="relative bg-gray-900 dark:bg-gray-900 overflow-hidden">
 
-        @include('components.bg-images')
-
         <div class="relative z-40 flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
 
             <div class="w-full bg-opacity-90 backdrop-blur-md bg-gray-50 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 items-center justify-center">
