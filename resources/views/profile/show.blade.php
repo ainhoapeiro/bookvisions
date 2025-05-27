@@ -38,15 +38,6 @@
                             </button>
                         </form>
                     @endif
-
-                    {{-- Botón de Panel de Administración (solo admins) --}}
-                    @if(auth()->user()->user_permission_level === 'admin')
-                        <a href="{{ route('admin.panel') }}"
-                           class="px-4 py-2 text-sm rounded-lg text-white transition"
-                           style="background-color: #442b68;">
-                            Panel de Administración
-                        </a>
-                    @endif
                 @endauth
             </div>
 

@@ -67,6 +67,11 @@ $logout = function (Logout $logout) {
                             <a href="{{ route('profile') }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">⚙️ Modificar perfil</a>
 
+                            @if(auth()->user()->is_admin)
+                                <a href="{{ route('admin.panel') }}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📊 Panel de Administración</a>
+                            @endif
+
                             <form method="POST" action="{{ route('logout') }}" class="border-t mt-1">
                                 @csrf
                                 <button type="submit"
@@ -136,6 +141,11 @@ $logout = function (Logout $logout) {
 
                     <a href="{{ route('profile') }}"
                        class="block text-sm text-gray-700 hover:underline">⚙️ Modificar perfil</a>
+
+                    @if(auth()->user()->is_admin)
+                        <a href="{{ route('admin.panel') }}"
+                           class="block text-sm text-gray-700 hover:underline">📊 Panel de Administración</a>
+                    @endif
 
                     <form method="POST" action="{{ route('logout') }}" class="mt-2">
                         @csrf

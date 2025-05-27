@@ -11,12 +11,22 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::where('user_permission_level', '!=', 'admin')->get();
-        $illustrations = Illustration::all();
-        $books = Book::all();
+        $users = User::where('is_admin', false)->paginate(10);
+        $illustrations = Illustration::latest()->paginate(10);
+        $books = Book::latest()->paginate(10);
 
         return view('admin.panel', compact('users', 'illustrations', 'books'));
     }
+
+    public function panel()
+    {
+        return view('admin.panel', [
+            'users' => User::where('is_admin', false)->paginate(10),
+            'illustrations' => Illustration::latest()->paginate(10),
+            'books' => Book::latest()->paginate(10),
+        ]);
+    }
+
 
     public function deleteUser($id)
     {
