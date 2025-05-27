@@ -27,7 +27,7 @@ class BookController extends Controller
         if ($request->hasFile('image')) {
             $filename = $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('books'), $filename);
-            $validated['image'] = 'books/' . $filename;
+            $validated['image'] = $filename;
         }
 
 
