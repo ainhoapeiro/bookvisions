@@ -5,7 +5,7 @@
 
             <div class="w-full bg-opacity-90 backdrop-blur-md bg-gray-50 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 items-center justify-center">
                 <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white-900 dark:text-white place-content-center">
-                    <x-application-logo-login class="block h-[193px] w-auto"/>
+                    <x-application-logo class="block h-[193px] w-auto"/>
                 </a>
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
