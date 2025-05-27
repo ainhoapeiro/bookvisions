@@ -11,64 +11,70 @@
         @endif
 
         {{-- Usuarios --}}
-        <details class="mb-6 border rounded-lg p-4">
+        <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Usuarios ({{ $users->total() }})</summary>
-            <ul class="mt-4 space-y-2">
-                @foreach ($users as $user)
-                    <li class="flex justify-between items-center">
-                        {{ $user->username }}
-                        <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" data-confirm>
-                            @csrf
-                            @method('DELETE')
-                            <button class="text-red-600 hover:underline">Eliminar</button>
-                        </form>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="pagination">
-                {{ $users->links() }}
+            <div id="usuarios-section">
+                <ul class="mt-4 space-y-2">
+                    @foreach ($users as $user)
+                        <li class="flex justify-between items-center">
+                            {{ $user->username }}
+                            <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" data-confirm>
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 hover:underline">Eliminar</button>
+                            </form>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="pagination">
+                    {{ $users->withPath(url()->current() . '?section=usuarios')->links() }}
+                </div>
             </div>
         </details>
 
         {{-- Ilustraciones --}}
-        <details class="mb-6 border rounded-lg p-4">
+        <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Ilustraciones ({{ $illustrations->total() }})</summary>
-            <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                @foreach ($illustrations as $illustration)
-                    <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
-                        <img src="{{ asset($illustration->image_path) }}" alt="{{ $illustration->title }}" class="w-full h-40 object-cover mb-2 rounded">
-                        <div class="font-semibold">{{ $illustration->title }}</div>
-                        <form action="{{ route('admin.deleteIllustration', $illustration->id) }}" method="POST" class="mt-1" data-confirm>
-                            @csrf
-                            @method('DELETE')
-                            <button class="text-red-600 hover:underline text-sm">Eliminar</button>
-                        </form>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="pagination">
-                {{ $illustrations->links() }}
+            <div id="ilustraciones-section">
+                <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    @foreach ($illustrations as $illustration)
+                        <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
+                            <img src="{{ asset($illustration->image_path) }}" alt="{{ $illustration->title }}" class="w-full h-40 object-cover mb-2 rounded">
+                            <div class="font-semibold">{{ $illustration->title }}</div>
+                            <form action="{{ route('admin.deleteIllustration', $illustration->id) }}" method="POST" class="mt-1" data-confirm>
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 hover:underline text-sm">Eliminar</button>
+                            </form>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="pagination">
+                    {{ $illustrations->withPath(url()->current() . '?section=ilustraciones')->links() }}
+                </div>
             </div>
         </details>
 
         {{-- Libros --}}
-        <details class="mb-6 border rounded-lg p-4">
+        <details class="mb-6 border rounded-lg p-4" open>
             <summary class="text-xl font-semibold cursor-pointer">Libros ({{ $books->total() }})</summary>
-            <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                @foreach ($books as $book)
-                    <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
-                        <img src="{{ asset('books/' . $book->image) }}" alt="{{ $book->title }}" class="w-full h-40 object-cover mb-2 rounded">
-                        <div class="font-semibold">{{ $book->title }}</div>
-                        <form action="{{ route('admin.deleteBook', $book->id) }}" method="POST" class="mt-1" data-confirm>
-                            @csrf
-                            @method('DELETE')
-                            <button class="text-red-600 hover:underline text-sm">Eliminar</button>
-                        </form>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="pagination">
-                {{ $books->links() }}
+            <div id="libros-section">
+                <ul class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    @foreach ($books as $book)
+                        <li class="border rounded-lg overflow-hidden shadow p-2 text-center">
+                            <img src="{{ asset('books/' . $book->image) }}" alt="{{ $book->title }}" class="w-full h-40 object-cover mb-2 rounded">
+                            <div class="font-semibold">{{ $book->title }}</div>
+                            <form action="{{ route('admin.deleteBook', $book->id) }}" method="POST" class="mt-1" data-confirm>
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 hover:underline text-sm">Eliminar</button>
+                            </form>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="pagination">
+                    {{ $books->withPath(url()->current() . '?section=libros')->links() }}
+                </div>
             </div>
         </details>
     </div>
@@ -85,7 +91,7 @@
         </div>
     </div>
 
-    {{-- Script para el modal --}}
+    {{-- Script para el modal y paginación parcial --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             let targetForm = null;
@@ -108,40 +114,58 @@
                     targetForm.submit();
                 }
             });
+
+            document.body.addEventListener('click', function (e) {
+                if (e.target.closest('.pagination a')) {
+                    e.preventDefault();
+                    const link = e.target.closest('a');
+                    const url = link.href;
+                    const section = new URL(url).searchParams.get('section');
+
+                    fetch(url)
+                        .then(res => res.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newContent = doc.querySelector(`#${section}-section`);
+                            document.querySelector(`#${section}-section`).innerHTML = newContent.innerHTML;
+                        });
+                }
+            });
         });
     </script>
 
     {{-- Estilos de paginación --}}
     <style>
         .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-            gap: 0.25rem;
+            display: flex !important;
+            justify-content: center !important;
+            margin-top: 1.5rem !important;
+            gap: 0.25rem !important;
         }
 
         .pagination .page-link {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #8f6baa;
-            border-radius: 0.375rem;
-            background-color: #8f6baa;
-            color: white;
-            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem !important;
+            border: 1px solid #8f6baa !important;
+            border-radius: 0.375rem !important;
+            background-color: #8f6baa !important;
+            color: white !important;
+            font-size: 0.875rem !important;
         }
 
         .pagination .active .page-link {
-            background-color: #edc865;
-            color: #263a5e;
+            background-color: #edc865 !important;
+            color: #263a5e !important;
         }
 
         .pagination .page-item.disabled .page-link {
-            background-color: #f9f6f6;
-            color: #aaa;
-            cursor: not-allowed;
+            background-color: #f9f6f6 !important;
+            color: #aaa !important;
+            cursor: not-allowed !important;
         }
 
         .pagination .page-link:hover {
-            background-color: #442b68;
+            background-color: #442b68 !important;
         }
     </style>
 @endsection
