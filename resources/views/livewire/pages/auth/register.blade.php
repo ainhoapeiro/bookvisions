@@ -1,3 +1,5 @@
+@use(Livewire\WithFileUploads)
+
 <?php
 
 use App\Models\User;
@@ -6,9 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
-use Livewire\WithFileUploads;
-
-Livewire\Volt\Volt::trait(WithFileUploads::class);
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -40,7 +39,6 @@ rules([
 $register = function () {
     $validated = $this->validate();
 
-    // Guardar imagen si se sube, o usar la predeterminada
     if (!empty($validated['image'])) {
         $filename = $validated['image']->getClientOriginalName();
         $validated['image']->move(public_path('profile-image'), $filename);
@@ -50,11 +48,9 @@ $register = function () {
     }
 
     unset($validated['image']);
-
     $validated['password'] = Hash::make($validated['password']);
 
     event(new Registered($user = User::create($validated)));
-
     Auth::login($user);
 
     $this->redirect(route('dashboard', absolute: false), navigate: true);
@@ -85,14 +81,14 @@ $register = function () {
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
-        <!-- Bio (opcional) -->
+        <!-- Bio -->
         <div class="mt-4">
             <x-input-label for="bio" :value="__('Bio')" />
             <textarea wire:model="bio" id="bio" name="bio" class="block mt-1 w-full rounded-md"></textarea>
             <x-input-error :messages="$errors->get('bio')" class="mt-2" />
         </div>
 
-        <!-- Email Address -->
+        <!-- Email -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="email" />
@@ -106,13 +102,10 @@ $register = function () {
             </label>
             <input id="image" type="file" name="image" accept="image/*" wire:model="image"
                    class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-
-
             @error('image')
             <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
             @enderror
         </div>
-
 
         <!-- Password -->
         <div class="mt-4">

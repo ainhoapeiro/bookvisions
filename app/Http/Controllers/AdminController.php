@@ -18,16 +18,6 @@ class AdminController extends Controller
         return view('admin.panel', compact('users', 'illustrations', 'books'));
     }
 
-    public function panel()
-    {
-        return view('admin.panel', [
-            'users' => User::where('is_admin', false)->paginate(10),
-            'illustrations' => Illustration::latest()->paginate(10),
-            'books' => Book::latest()->paginate(10),
-        ]);
-    }
-
-
     public function deleteUser($id)
     {
         User::findOrFail($id)->delete();
@@ -45,5 +35,4 @@ class AdminController extends Controller
         Book::findOrFail($id)->delete();
         return back()->with('success', 'Libro eliminado correctamente.');
     }
-
 }
