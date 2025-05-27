@@ -138,34 +138,37 @@
     {{-- Estilos de paginación --}}
     <style>
         .pagination {
-            display: flex !important;
-            justify-content: center !important;
-            margin-top: 1.5rem !important;
-            gap: 0.25rem !important;
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 0.25rem;
         }
 
-        .pagination .page-link {
-            padding: 0.5rem 0.75rem !important;
-            border: 1px solid #8f6baa !important;
-            border-radius: 0.375rem !important;
-            background-color: #8f6baa !important;
-            color: white !important;
-            font-size: 0.875rem !important;
+        .pagination a,
+        .pagination span {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #8f6baa;
+            border-radius: 0.375rem;
+            background-color: #8f6baa;
+            color: white;
+            font-size: 0.875rem;
+            text-decoration: none;
         }
 
-        .pagination .active .page-link {
-            background-color: #edc865 !important;
-            color: #263a5e !important;
+        .pagination .active span {
+            background-color: #edc865;
+            color: #263a5e;
+            font-weight: bold;
         }
 
-        .pagination .page-item.disabled .page-link {
-            background-color: #f9f6f6 !important;
-            color: #aaa !important;
-            cursor: not-allowed !important;
+        .pagination span[aria-disabled='true'] {
+            background-color: #f9f6f6;
+            color: #aaa;
+            cursor: not-allowed;
         }
 
-        .pagination .page-link:hover {
-            background-color: #442b68 !important;
+        .pagination a:hover {
+            background-color: #442b68;
         }
     </style>
 @endsection
