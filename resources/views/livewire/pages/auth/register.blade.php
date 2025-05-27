@@ -4,25 +4,33 @@
         {{ __('Crea una cuenta nueva.') }}
     </div>
 
-    <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    {{-- Errores de validación clásicos --}}
+    @if ($errors->any())
+        <div class="mb-4">
+            <ul class="list-disc list-inside text-sm text-red-600">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Nombre -->
         <div>
             <label for="name" class="block font-medium text-sm text-gray-700">{{ __('Nombre') }}</label>
             <input id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
         </div>
 
-        <!-- Email Address -->
+        <!-- Email -->
         <div class="mt-4">
             <label for="email" class="block font-medium text-sm text-gray-700">{{ __('Email') }}</label>
             <input id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
         </div>
 
-        <!-- Password -->
+        <!-- Contraseña -->
         <div class="mt-4">
             <label for="password" class="block font-medium text-sm text-gray-700">{{ __('Contraseña') }}</label>
             <input id="password" class="block mt-1 w-full"
@@ -31,7 +39,7 @@
                    required autocomplete="new-password" />
         </div>
 
-        <!-- Confirm Password -->
+        <!-- Confirmar contraseña -->
         <div class="mt-4">
             <label for="password_confirmation" class="block font-medium text-sm text-gray-700">{{ __('Confirmar contraseña') }}</label>
             <input id="password_confirmation" class="block mt-1 w-full"
