@@ -12,7 +12,7 @@
 
         {{-- Usuarios --}}
         <details class="mb-6 border rounded-lg p-4" open>
-            <summary class="text-xl font-semibold cursor-pointer">Usuarios ({{ $users->total() }})</summary>
+            <summary class="text-xl font-semibold cursor-pointer">Usuarios ({{ $users->count() }})</summary>
             <div id="usuarios-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
                 <ul class="space-y-2">
                     @foreach ($users as $user)
@@ -31,7 +31,7 @@
 
         {{-- Ilustraciones --}}
         <details class="mb-6 border rounded-lg p-4" open>
-            <summary class="text-xl font-semibold cursor-pointer">Ilustraciones ({{ $illustrations->total() }})</summary>
+            <summary class="text-xl font-semibold cursor-pointer">Ilustraciones ({{ $illustrations->count() }})</summary>
             <div id="ilustraciones-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
                 <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($illustrations as $illustration)
@@ -51,7 +51,7 @@
 
         {{-- Libros --}}
         <details class="mb-6 border rounded-lg p-4" open>
-            <summary class="text-xl font-semibold cursor-pointer">Libros ({{ $books->total() }})</summary>
+            <summary class="text-xl font-semibold cursor-pointer">Libros ({{ $books->count()}})</summary>
             <div id="libros-section" class="max-h-96 overflow-y-auto mt-4 pr-2">
                 <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($books as $book)
