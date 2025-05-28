@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Livewire\WithFileUploads;
 
-Livewire\Volt\Volt::trait(WithFileUploads::class);
-
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
