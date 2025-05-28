@@ -5,7 +5,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Livewire\WithFileUploads;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -21,7 +20,7 @@ state([
     'bio' => '',
     'password' => '',
     'password_confirmation' => '',
-    'image' => null,
+    'profile_image' => '', // El usuario tiene que elegir sí o sí
 ]);
 
 rules([
@@ -30,23 +29,12 @@ rules([
     'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
     'bio' => ['required', 'string', 'max:1000'],
+    'profile_image' => ['required', 'string'],
     'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-    // Imagen NO obligatoria
-    'image' => ['nullable', 'image', 'max:1024'],
 ]);
 
 $register = function () {
     $validated = $this->validate();
-
-    if (!empty($validated['image'])) {
-        $filename = uniqid('user_') . '.' . $validated['image']->getClientOriginalExtension();
-        copy($validated['image']->getRealPath(), public_path('profile-image/' . $filename));
-        $validated['profile_image'] = 'profile-image/' . $filename;
-    } else {
-        $validated['profile_image'] = 'profile-image/default-user.png';
-    }
-
-    unset($validated['image']);
 
     $validated['password'] = Hash::make($validated['password']);
 
@@ -60,7 +48,7 @@ $register = function () {
 ?>
 
 <div>
-    <form wire:submit="register" enctype="multipart/form-data">
+    <form wire:submit="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('First Name')" />
@@ -96,17 +84,31 @@ $register = function () {
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Image Upload -->
+        <!-- Avatar Selection -->
         <div class="mt-4">
-            <label for="image" class="block text-sm font-medium text-gray-700">
-                {{ __('Profile Image') }}
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                {{ __('Elige tu avatar') }}
             </label>
-            <input id="image" type="file" name="image" accept="image/*"
-                   class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-
-            @error('image')
-            <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-            @enderror
+            <div class="flex flex-wrap gap-4">
+                @for ($i = 1; $i <= 8; $i++)
+                    <label class="cursor-pointer">
+                        <input
+                            type="radio"
+                            wire:model="profile_image"
+                            name="profile_image"
+                            value="{{ "profile-image/avatar_$i.png" }}"
+                            class="hidden peer"
+                            required
+                        >
+                        <img
+                            src="{{ asset("profile-image/avatar_$i.png") }}"
+                            alt="Avatar {{ $i }}"
+                            class="w-16 h-16 rounded-full border-2 border-transparent peer-checked:border-purple-500 hover:border-gray-300 transition"
+                        >
+                    </label>
+                @endfor
+            </div>
+            <x-input-error :messages="$errors->get('profile_image')" class="mt-2" />
         </div>
 
         <!-- Password -->
