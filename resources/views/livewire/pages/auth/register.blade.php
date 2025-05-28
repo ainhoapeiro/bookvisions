@@ -1,67 +1,137 @@
-@extends('layouts.app')
+<?php
 
-@section('content')
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Livewire\WithFileUploads;
 
-    <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+use function Livewire\Volt\layout;
+use function Livewire\Volt\rules;
+use function Livewire\Volt\state;
 
-        <!-- Nombre -->
+layout('layouts.guest');
+
+state([
+    'name' => '',
+    'last_name' => '',
+    'username' => '',
+    'email' => '',
+    'bio' => '',
+    'password' => '',
+    'password_confirmation' => '',
+    'image' => null,
+]);
+
+rules([
+    'name' => ['required', 'string', 'max:255'],
+    'last_name' => ['required', 'string', 'max:255'],
+    'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
+    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+    'bio' => ['required', 'string', 'max:1000'],
+    'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+    // Imagen NO obligatoria
+    'image' => ['nullable', 'image', 'max:1024'],
+]);
+
+$register = function () {
+    $validated = $this->validate();
+
+    if (!empty($validated['image'])) {
+        $filename = uniqid('user_') . '.' . $validated['image']->getClientOriginalExtension();
+        copy($validated['image']->getRealPath(), public_path('profile-image/' . $filename));
+        $validated['profile_image'] = 'profile-image/' . $filename;
+    } else {
+        $validated['profile_image'] = 'profile-image/default-user.png';
+    }
+
+    unset($validated['image']);
+
+    $validated['password'] = Hash::make($validated['password']);
+
+    event(new Registered($user = User::create($validated)));
+
+    Auth::login($user);
+
+    $this->redirect(route('dashboard', absolute: false), navigate: true);
+};
+
+?>
+
+<div>
+    <form wire:submit="register" enctype="multipart/form-data">
+        <!-- Name -->
         <div>
-            <label for="name">Nombre</label>
-            <input type="text" name="name" id="name" required>
-            @error('name') <span>{{ $message }}</span> @enderror
+            <x-input-label for="name" :value="__('First Name')" />
+            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="given-name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <!-- Apellidos -->
-        <div>
-            <label for="last_name">Apellidos</label>
-            <input type="text" name="last_name" id="last_name" required>
-            @error('last_name') <span>{{ $message }}</span> @enderror
+        <!-- Last Name -->
+        <div class="mt-4">
+            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-text-input wire:model="last_name" id="last_name" class="block mt-1 w-full" type="text" name="last_name" required autocomplete="family-name" />
+            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
         <!-- Username -->
-        <div>
-            <label for="username">Usuario</label>
-            <input type="text" name="username" id="username" required>
-            @error('username') <span>{{ $message }}</span> @enderror
+        <div class="mt-4">
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="username" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Bio -->
-        <div>
-            <label for="bio">Biografía</label>
-            <textarea name="bio" id="bio" required></textarea>
-            @error('bio') <span>{{ $message }}</span> @enderror
+        <div class="mt-4">
+            <x-input-label for="bio" :value="__('Bio')" />
+            <textarea wire:model="bio" id="bio" name="bio" class="block mt-1 w-full rounded-md"></textarea>
+            <x-input-error :messages="$errors->get('bio')" class="mt-2" />
         </div>
 
-        <!-- Email -->
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-            @error('email') <span>{{ $message }}</span> @enderror
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="email" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Imagen de perfil -->
-        <div>
-            <label for="image">Imagen de perfil (opcional)</label>
-            <input type="file" name="image" id="image" accept="image/*">
-            @error('image') <span>{{ $message }}</span> @enderror
+        <!-- Image Upload -->
+        <div class="mt-4">
+            <label for="image" class="block text-sm font-medium text-gray-700">
+                {{ __('Profile Image') }}
+            </label>
+            <input id="image" type="file" name="image" accept="image/*"
+                   class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+
+            @error('image')
+            <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+            @enderror
         </div>
 
-        <!-- Contraseña -->
-        <div>
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required>
-            @error('password') <span>{{ $message }}</span> @enderror
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
+                          type="password"
+                          name="password"
+                          required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirmar contraseña -->
-        <div>
-            <label for="password_confirmation">Confirmar contraseña</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" required>
-            @error('password_confirmation') <span>{{ $message }}</span> @enderror
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
+                          type="password"
+                          name="password_confirmation" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <button type="submit">Registrarse</button>
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button class="ms-4" style="background-color: rgba(143, 107, 170, 1); border-color: rgba(143, 107, 170, 1);">
+                {{ __('Register') }}
+            </x-primary-button>
+        </div>
     </form>
-
-@endsection
+</div>
