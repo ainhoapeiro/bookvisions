@@ -38,13 +38,12 @@ rules([
 $register = function () {
     $validated = $this->validate();
 
-    // Ruta por defecto
+    // Imagen por defecto
     $validated['profile_image'] = 'profile-image/default-user.png';
 
-    // Si el usuario sube imagen, la guardamos y cambiamos el path
     if (!empty($validated['image'])) {
         $filename = uniqid('user_') . '.' . $validated['image']->getClientOriginalExtension();
-        $validated['image']->move(public_path('profile-image'), $filename);
+        move_uploaded_file($validated['image']->getRealPath(), public_path('profile-image/' . $filename));
         $validated['profile_image'] = 'profile-image/' . $filename;
     }
 
