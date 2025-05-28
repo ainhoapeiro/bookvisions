@@ -20,8 +20,8 @@
             {{-- 🧑 Editar perfil --}}
             <section class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
-                    @csrf
+                    <form method="POST" action="{{ route('profile.update') }}">
+                        @csrf
                         @method('PUT')
 
                         <div class="grid grid-cols-1 gap-4">
@@ -49,6 +49,36 @@
                                 <label for="bio" class="block font-medium text-sm text-gray-700">Biografía</label>
                                 <textarea name="bio" id="bio" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ old('bio', auth()->user()->bio) }}</textarea>
                             </div>
+
+                            {{-- SELECCIÓN DE AVATAR --}}
+                            <div>
+                                <label class="block font-medium text-sm text-gray-700 mb-2">
+                                    {{ __('Elige tu avatar') }}
+                                </label>
+                                <div class="flex flex-wrap gap-4">
+                                    @for ($i = 1; $i <= 8; $i++)
+                                        <label class="cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="profile_image"
+                                                value="{{ "profile-image/avatar_$i.png" }}"
+                                                class="hidden peer"
+                                                {{ (old('profile_image', auth()->user()->profile_image) == "profile-image/avatar_$i.png") ? 'checked' : '' }}
+                                                required
+                                            >
+                                            <img
+                                                src="{{ asset("profile-image/avatar_$i.png") }}"
+                                                alt="Avatar {{ $i }}"
+                                                class="w-16 h-16 rounded-full border-2 border-transparent peer-checked:border-purple-500 hover:border-gray-300 transition"
+                                            >
+                                        </label>
+                                    @endfor
+                                </div>
+                                @error('profile_image')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            {{-- FIN AVATAR --}}
 
                             <div class="pt-4">
                                 <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
