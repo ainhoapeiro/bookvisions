@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth; // <-- Añade esto si no está
 
 class ProfileController extends Controller
 {
@@ -25,13 +25,13 @@ class ProfileController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'bio' => 'nullable|string|max:500',
+            'profile_image' => 'required|string', // Añadido: avatar obligatorio y tipo string
         ]);
 
         $user->update($validated);
 
         return back()->with('status', 'Perfil actualizado correctamente.');
     }
-
 
     public function updatePassword(Request $request)
     {
@@ -65,7 +65,4 @@ class ProfileController extends Controller
 
         return redirect('/')->with('status', 'Tu cuenta ha sido eliminada correctamente.');
     }
-
-
-
 }
