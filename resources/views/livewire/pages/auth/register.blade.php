@@ -4,7 +4,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Livewire\WithFileUploads;
 
@@ -32,19 +31,21 @@ rules([
     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
     'bio' => ['required', 'string', 'max:1000'],
     'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-    'image' => ['required', 'image', 'max:1024'],
+    // Imagen NO obligatoria
+    'image' => ['nullable', 'image', 'max:1024'],
 ]);
 
 $register = function () {
     $validated = $this->validate();
 
-    // Guardar imagen si se sube, o usar la predeterminada
+    // Ruta por defecto
+    $validated['profile_image'] = 'profile-image/default-user.png';
+
+    // Si el usuario sube imagen, la guardamos y cambiamos el path
     if (!empty($validated['image'])) {
-        $filename = $validated['image']->getClientOriginalName();
+        $filename = uniqid('user_') . '.' . $validated['image']->getClientOriginalExtension();
         $validated['image']->move(public_path('profile-image'), $filename);
         $validated['profile_image'] = 'profile-image/' . $filename;
-    } else {
-        $validated['profile_image'] = 'profile-image/default-user.png';
     }
 
     unset($validated['image']);
@@ -83,7 +84,7 @@ $register = function () {
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
-        <!-- Bio (opcional) -->
+        <!-- Bio -->
         <div class="mt-4">
             <x-input-label for="bio" :value="__('Bio')" />
             <textarea wire:model="bio" id="bio" name="bio" class="block mt-1 w-full rounded-md"></textarea>
@@ -102,15 +103,13 @@ $register = function () {
             <label for="image" class="block text-sm font-medium text-gray-700">
                 {{ __('Profile Image') }}
             </label>
-            <input id="image" type="file" name="image" accept="image/*" wire:model="image"
+            <input id="image" type="file" name="image" accept="image/*"
                    class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-
 
             @error('image')
             <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
             @enderror
         </div>
-
 
         <!-- Password -->
         <div class="mt-4">
