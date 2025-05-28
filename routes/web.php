@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExploreController;
@@ -77,6 +77,10 @@ Route::get('/admin/panel', [AdminController::class, 'index'])->name('admin.panel
 Route::delete('/admin/user/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 Route::delete('/admin/illustration/{id}', [AdminController::class, 'deleteIllustration'])->name('admin.deleteIllustration');
 Route::delete('/admin/book/{id}', [AdminController::class, 'deleteBook'])->name('admin.deleteBook');
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
 
 // Rutas de autenticación (login, register, etc.)
 require __DIR__.'/auth.php';
