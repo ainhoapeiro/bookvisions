@@ -60,8 +60,8 @@ $login = function () {
     <div class="mt-4 text-center">
         <p class="text-sm text-gray-600">
             {{ __("Don't have an account?") }}
-            <a href="{{ route('register') }}" class="hover:underline font-semibold" style="color: rgba(143, 107, 170, 1);">
-                {{ __('Register here') }}
+            <a href="{{ route('register') }}" class="hover:underline" style="color: rgba(143, 107, 170, 1);" wire:navigate>
+                {{ __('Register') }}
             </a>
         </p>
     </div>

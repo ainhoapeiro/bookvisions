@@ -1,89 +1,142 @@
-<x-guest-layout>
-    <section class="relative bg-gray-900 dark:bg-gray-900 overflow-hidden">
+<?php
 
-        <div class="relative z-40 flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules;
+use Livewire\WithFileUploads;
 
-            <div class="w-full bg-opacity-90 backdrop-blur-md bg-gray-50 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 items-center justify-center">
-                <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white-900 dark:text-white place-content-center">
-                    <x-application-logo class="block h-[193px] w-auto"/>
-                </a>
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        {{__('Create an account')}}
-                    </h1>
+Livewire\Volt\Volt::trait(WithFileUploads::class);
 
-                    <form method="POST" class="space-y-4 md:space-y-6" action="{{ route('register') }}" enctype="multipart/form-data">
-                        @csrf
+use function Livewire\Volt\layout;
+use function Livewire\Volt\rules;
+use function Livewire\Volt\state;
 
-                        <!-- Name -->
-                        <div>
-                            <label for="name">{{__('Name')}}</label>
-                            <x-text-input type="text" name="name" :value="old('name')" id="name"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                          placeholder="Jon" required autocomplete="given-name"/>
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                        </div>
+layout('layouts.guest');
 
-                        <!-- Surname -->
-                        <div>
-                            <label for="surname">{{ __('Surname') }}</label>
-                            <x-text-input type="text" name="surname" :value="old('surname')" id="surname"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                          placeholder="Doe" required autocomplete="family-name"/>
-                            <x-input-error :messages="$errors->get('surname')" class="mt-2" />
-                        </div>
+state([
+    'name' => '',
+    'last_name' => '',
+    'username' => '',
+    'email' => '',
+    'bio' => '',
+    'password' => '',
+    'password_confirmation' => '',
+    'image' => null,
+]);
 
-                        <!-- Email -->
-                        <div>
-                            <label for="email">Your email</label>
-                            <x-text-input type="email" name="email" :value="old('email')" id="email"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                          placeholder="name@company.com" required autocomplete="email"/>
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                        </div>
+rules([
+    'name' => ['required', 'string', 'max:255'],
+    'last_name' => ['required', 'string', 'max:255'],
+    'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
+    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+    'bio' => ['required', 'string', 'max:1000'],
+    'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+    'image' => ['required', 'image', 'max:1024'],
+]);
 
-                        <!-- Profile Picture -->
-                        <div>
-                            <label for="profile_picture">{{ __('Upload profile picture') }}</label>
-                            <input id="profile_picture" name="profile_picture" type="file" accept="image/*"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                            <x-input-error :messages="$errors->get('profile_picture')" class="mt-2" />
-                        </div>
+$register = function () {
+    $validated = $this->validate();
 
-                        <!-- Description -->
-                        <div>
-                            <label for="description">{{ __('Short description') }}</label>
-                            <textarea id="description" name="description" rows="3"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                      placeholder="Tell us something about yourself...">{{ old('description') }}</textarea>
-                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
-                        </div>
+    // Guardar imagen si se sube, o usar la predeterminada
+    if (!empty($validated['image'])) {
+        $filename = $validated['image']->getClientOriginalName();
+        $validated['image']->move(public_path('profile-image'), $filename);
+        $validated['profile_image'] = 'profile-image/' . $filename;
+    } else {
+        $validated['profile_image'] = 'profile-image/default-user.png';
+    }
 
-                        <!-- Password -->
-                        <div>
-                            <label for="password">{{__('Password')}}</label>
-                            <x-text-input type="password" id="password" name="password" required autocomplete="new-password"
-                                          placeholder="••••••••"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        </div>
+    unset($validated['image']);
 
-                        <!-- Confirm Password -->
-                        <div>
-                            <label for="password_confirmation">{{__('Confirm password')}}</label>
-                            <x-text-input type="password" name="password_confirmation" id="password_confirmation"
-                                          placeholder="••••••••"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required autocomplete="new-password"/>
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                        </div>
+    $validated['password'] = Hash::make($validated['password']);
 
-                        <x-primary-button class="ms-4 w-full">
-                            {{ __('Register') }}
-                        </x-primary-button>
+    event(new Registered($user = User::create($validated)));
 
-                    </form>
-                </div>
-            </div>
+    Auth::login($user);
+
+    $this->redirect(route('dashboard', absolute: false), navigate: true);
+};
+
+?>
+
+<div>
+    <form wire:submit="register" enctype="multipart/form-data">
+        <!-- Name -->
+        <div>
+            <x-input-label for="name" :value="__('First Name')" />
+            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="given-name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
-    </section>
-</x-guest-layout>
+
+        <!-- Last Name -->
+        <div class="mt-4">
+            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-text-input wire:model="last_name" id="last_name" class="block mt-1 w-full" type="text" name="last_name" required autocomplete="family-name" />
+            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+        </div>
+
+        <!-- Username -->
+        <div class="mt-4">
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="username" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        </div>
+
+        <!-- Bio (opcional) -->
+        <div class="mt-4">
+            <x-input-label for="bio" :value="__('Bio')" />
+            <textarea wire:model="bio" id="bio" name="bio" class="block mt-1 w-full rounded-md"></textarea>
+            <x-input-error :messages="$errors->get('bio')" class="mt-2" />
+        </div>
+
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="email" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mt-4">
+            <label for="image" class="block text-sm font-medium text-gray-700">
+                {{ __('Profile Image') }}
+            </label>
+            <input id="image" type="file" name="image" accept="image/*" wire:model="image"
+                   class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+
+
+            @error('image')
+            <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+            @enderror
+        </div>
+
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
+                          type="password"
+                          name="password"
+                          required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
+                          type="password"
+                          name="password_confirmation" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button class="ms-4" style="background-color: rgba(143, 107, 170, 1); border-color: rgba(143, 107, 170, 1);">
+                {{ __('Register') }}
+            </x-primary-button>
+        </div>
+    </form>
+</div>
